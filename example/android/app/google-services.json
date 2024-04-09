@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "327748732182",
+    "project_id": "mlkit-75bd7",
+    "storage_bucket": "mlkit-75bd7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:327748732182:android:645a89bab0278fb1797c37",
+        "android_client_info": {
+          "package_name": "com.onix.mlcardscanner.ml_card_scanner_example"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCu6WJjH4bCKySsqDj1Ex63rXlWUO5q3OM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -18,13 +18,22 @@ class CardParserUtil {
   Future<CardInfo?> detectCardContent(InputImage inputImage) async {
     var input = await _textDetector.processImage(inputImage);
 
-    var clearElements = input.blocks.map((e) => e.text.clean()).toList();
+    print('Raw input');
+    print(input.blocks.map((block) => block.text).join(', '));
+
+    var clearElements = input.blocks
+        .map((e) => e.text
+            .fixPossibleMisspells()
+            .split('\n')
+            .map((line) => line.clean()))
+        .expand((e) => e)
+        .toList();
 
     try {
       var possibleCardNumber = clearElements.firstWhere((input) {
-        final cleanValue = input.fixPossibleMisspells();
-        return (cleanValue.length == _cardNumberLength) &&
-            (int.tryParse(cleanValue) ?? -1) != -1;
+        print('Clean value $input');
+        return (input.length == _cardNumberLength) &&
+            (int.tryParse(input) ?? -1) != -1;
       });
       var cardType = _getCardType(possibleCardNumber);
       var expire = _getExpireDate(clearElements);
@@ -39,12 +48,13 @@ class CardParserUtil {
     try {
       final possibleDate = input.firstWhere((input) {
         final cleanValue = input.fixPossibleMisspells();
+        print('Clean value $input');
         if (cleanValue.length == 4) {
           return true;
         }
         return false;
       });
-      return possibleDate.fixPossibleMisspells().possibleDateFormatted();
+      return possibleDate.possibleDateFormatted();
     } catch (e, _) {
       return '';
     }

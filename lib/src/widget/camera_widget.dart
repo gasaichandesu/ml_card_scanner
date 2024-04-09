@@ -34,7 +34,7 @@ class CameraViewState extends State<CameraWidget> {
     DeviceOrientation.portraitDown: 180,
     DeviceOrientation.landscapeRight: 270,
   };
-  int _lastFrameDecode = 0;
+  int _lastFrameDecode = DateTime.now().millisecondsSinceEpoch;
 
   Future<void> stopCameraStream() async {
     if (!widget.cameraController.value.isStreamingImages) {
@@ -62,20 +62,17 @@ class CameraViewState extends State<CameraWidget> {
 
     if (widget.cameraPreviewBuilder != null) {
       return widget.cameraPreviewBuilder?.call(
-        context,
-        CameraPreviewWrapper(cameraController: widget.cameraController),
-        widget.cameraController.value.previewSize,
-      ) ??
+            context,
+            CameraPreviewWrapper(cameraController: widget.cameraController),
+            widget.cameraController.value.previewSize,
+          ) ??
           const SizedBox.shrink();
     }
 
-    return Transform.scale(
-      scale: 1 / mediaSize.aspectRatio,
-      child: Center(
-        child: AspectRatio(
-          aspectRatio: mediaSize.aspectRatio,
-          child: CameraPreview(widget.cameraController),
-        ),
+    return Center(
+      child: AspectRatio(
+        aspectRatio: mediaSize.aspectRatio,
+        child: CameraPreview(widget.cameraController),
       ),
     );
   }
@@ -85,6 +82,7 @@ class CameraViewState extends State<CameraWidget> {
         widget.scannerDelay) {
       return;
     }
+
     _lastFrameDecode = DateTime.now().millisecondsSinceEpoch;
 
     final sensorOrientation = widget.cameraDescription.sensorOrientation;
@@ -93,7 +91,7 @@ class CameraViewState extends State<CameraWidget> {
       rotation = InputImageRotationValue.fromRawValue(sensorOrientation);
     } else if (Platform.isAndroid) {
       var rotationCompensation =
-      _orientations[widget.cameraController.value.deviceOrientation];
+          _orientations[widget.cameraController.value.deviceOrientation];
       if (rotationCompensation == null) return null;
       if (widget.cameraDescription.lensDirection == CameraLensDirection.front) {
         rotationCompensation = (sensorOrientation + rotationCompensation) % 360;

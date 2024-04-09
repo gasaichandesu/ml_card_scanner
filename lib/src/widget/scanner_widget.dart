@@ -95,6 +95,7 @@ class _ScannerWidgetState extends State<ScannerWidget>
   @override
   Widget build(BuildContext context) {
     return Stack(
+      fit: StackFit.expand,
       children: <Widget>[
         ValueListenableBuilder<bool>(
           valueListenable: _isCameraInitialized,
@@ -173,6 +174,9 @@ class _ScannerWidgetState extends State<ScannerWidget>
           : ImageFormatGroup.bgra8888,
     );
     await _cameraController?.initialize();
+
+    await _cameraController?.setZoomLevel(1.0);
+
     return true;
   }
 
@@ -181,7 +185,7 @@ class _ScannerWidgetState extends State<ScannerWidget>
       case CameraResolution.max:
         return ResolutionPreset.max;
       case CameraResolution.high:
-        return ResolutionPreset.veryHigh;
+        return ResolutionPreset.high;
       case CameraResolution.ultra:
         return ResolutionPreset.ultraHigh;
     }
